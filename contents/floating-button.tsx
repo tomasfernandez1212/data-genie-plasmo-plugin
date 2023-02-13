@@ -4,6 +4,15 @@ import { useEffect, useState } from "react"
 
 import collapseWindowStyle from "data-text:~/contents/floating-button.css"
 
+import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+} from "@chatscope/chat-ui-kit-react";
+
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
   matches: ["*://*/*.ipynb"],
@@ -12,7 +21,7 @@ export const config: PlasmoCSConfig = {
 // // Inject into the ShadowDOM
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style")
-  style.textContent = collapseWindowStyle
+  style.textContent = collapseWindowStyle + chatKitStyles
   return style
 }
 
@@ -29,7 +38,22 @@ const DataGenieSidebar = () => {
     <div className="floatingButtonContainer">
       {isOpen && (
         <div className="floatingButtonCard">
-          <p>Hello World</p>
+          <MainContainer>
+            <ChatContainer>
+              <MessageList>
+                <Message
+                  model={{
+                    message: "Hello my friend",
+                    sentTime: "just now",
+                    sender: "Joe",
+                    direction: "outgoing",
+                    position: "single",
+                  }}
+                />
+              </MessageList>
+              <MessageInput placeholder="Type message here" />
+            </ChatContainer>
+          </MainContainer>
         </div>
       )}
       <button className="floatingButton" onClick={() => setIsOpen(!isOpen)}>
