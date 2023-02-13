@@ -1,20 +1,28 @@
+import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import type { PlasmoGetStyle } from "plasmo"
+ 
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+} from "@chatscope/chat-ui-kit-react";
+
 import iconBase64 from "data-base64:~assets/icon.png"
-import cssText from "data-text:~/contents/datagenie-sidebar.css"
+import sidebarStyle from "data-text:~/contents/datagenie-sidebar.css"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useState } from "react"
-
-// Inject to the webpage itself
-import "./datagenie-sidebar-base.css"
 
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
   matches: ["*://*/*.ipynb"],
 }
 
-// Inject into the ShadowDOM
-export const getStyle = () => {
+// // Inject into the ShadowDOM
+export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style")
-  style.textContent = cssText
+  style.textContent = chatKitStyles + sidebarStyle
   return style
 }
 
@@ -28,12 +36,28 @@ const DataGenieSidebar = () => {
   }, [isOpen])
 
   return (
-    <div id="sidebar" className={isOpen ? "open" : "closed"}>
+    <div>
       <button className="sidebar-toggle" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? "🟡 Close" : "🟣 Open"}
       </button>
-      <img src={iconBase64} alt="Extension Icon" width={128} height={128} />
-      <p>Hello World</p>
+      <div id="sidebar" className={isOpen ? "open" : "closed"}>
+        <MainContainer>
+          <ChatContainer>
+            <MessageList>
+              <Message
+                model={{
+                  message: "Hello my friend",
+                  sentTime: "just now",
+                  sender: "Joe",
+                  direction: "incoming",
+                  position: "normal",
+                }}
+              />
+            </MessageList>
+            <MessageInput id="message-input" placeholder="Type message here" />
+          </ChatContainer>
+        </MainContainer>
+      </div>
     </div>
   )
 }
