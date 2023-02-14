@@ -1,4 +1,4 @@
-.floatingButtonContainer {
+.modalContainer {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.floatingButtonCard {
+.modal {
   position: absolute;
   bottom: 50px;
   right: 0px;
@@ -18,7 +18,7 @@
   max-height: 20vh;
 }
 
-.floatingButton {
+.modalButton {
   background-color: #007bff;
   color: white;
   border: 0;

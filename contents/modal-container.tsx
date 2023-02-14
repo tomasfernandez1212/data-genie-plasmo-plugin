@@ -2,7 +2,7 @@ import type { PlasmoGetStyle } from "plasmo"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useState } from "react"
 
-import collapseWindowStyle from "data-text:~/contents/floating-button.css"
+import collapseWindowStyle from "data-text:~/contents/modal-container.css"
 
 import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
@@ -12,6 +12,7 @@ import {
   Message,
   MessageInput,
 } from "@chatscope/chat-ui-kit-react";
+
 
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
@@ -35,18 +36,18 @@ const DataGenieSidebar = () => {
   }, [isOpen])
 
   return (
-    <div className="floatingButtonContainer">
+    <div className="modalContainer">
       {isOpen && (
-        <div className="floatingButtonCard">
+        <div className="modal">
           <MainContainer>
             <ChatContainer>
               <MessageList>
                 <Message
                   model={{
-                    message: "Hello my friend",
+                    message: "Customer service: Hello there! How can I help you?",
                     sentTime: "just now",
                     sender: "Joe",
-                    direction: "outgoing",
+                    direction: "incoming",
                     position: "single",
                   }}
                 />
@@ -56,7 +57,7 @@ const DataGenieSidebar = () => {
           </MainContainer>
         </div>
       )}
-      <button className="floatingButton" onClick={() => setIsOpen(!isOpen)}>
+      <button className="modalButton" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? 'Close' : 'Open'}
       </button>
     </div>
