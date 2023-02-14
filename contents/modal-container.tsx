@@ -52,7 +52,7 @@ const DataGenieSidebar = () => {
                   }}
                 />
               </MessageList>
-              <MessageInput placeholder="Type message here" />
+              <MessageInput placeholder="Type message here" onKeyDown={(event) => event.stopPropagation()}/>
             </ChatContainer>
           </MainContainer>
         </div>
