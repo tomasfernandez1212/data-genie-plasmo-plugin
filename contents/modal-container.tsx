@@ -26,13 +26,13 @@ export const getStyle: PlasmoGetStyle = () => {
   return style
 }
 
-export const getShadowHostId = () => "plasmo-datagenie-sidebar"
+export const getShadowHostId = () => "plasmo-datagenie-modal"
 
-const DataGenieSidebar = () => {
+const DataGenieModal = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
-    document.body.classList.toggle("plasmo-datagenie-sidebar-show", isOpen)
+    document.body.classList.toggle("plasmo-datagenie-modal-show", isOpen)
   }, [isOpen])
 
   return (
@@ -64,4 +64,4 @@ const DataGenieSidebar = () => {
   )
 }
 
-export default DataGenieSidebar
+export default DataGenieModal
