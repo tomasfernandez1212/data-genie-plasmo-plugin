@@ -1,5 +1,3 @@
-import type { PlasmoGetStyle } from "plasmo"
-
 import {
   MainContainer,
   ChatContainer,
@@ -10,7 +8,7 @@ import {
 
 const ChatComponent = () => {
   return (
-    <MainContainer>
+    <MainContainer style={{fontSize: "1.2em"}}>
     <ChatContainer>
       <MessageList>
         <Message
