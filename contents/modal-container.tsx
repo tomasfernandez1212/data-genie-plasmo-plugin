@@ -26,14 +26,8 @@ export const getStyle: PlasmoGetStyle = () => {
   return style
 }
 
-export const getShadowHostId = () => "plasmo-datagenie-modal"
-
 const DataGenieModal = () => {
   const [isOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    document.body.classList.toggle("plasmo-datagenie-modal-show", isOpen)
-  }, [isOpen])
 
   return (
     <div className="modalContainer">
