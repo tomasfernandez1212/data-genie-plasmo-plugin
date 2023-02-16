@@ -2,16 +2,9 @@ import type { PlasmoGetStyle } from "plasmo"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useState } from "react"
 
+import ChatComponent from "../components/chat-component"
 import collapseWindowStyle from "data-text:~/contents/modal-container.css"
-
 import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  MessageInput,
-} from "@chatscope/chat-ui-kit-react";
 
 
 // Match any URL that ends with ipynb
@@ -19,7 +12,8 @@ export const config: PlasmoCSConfig = {
   matches: ["*://*/*.ipynb"],
 }
 
-// // Inject into the ShadowDOM
+
+// Inject into the ShadowDOM
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style")
   style.textContent = collapseWindowStyle + chatKitStyles
@@ -33,22 +27,7 @@ const DataGenieModal = () => {
     <div className="modalContainer">
       {isOpen && (
         <div className="modal">
-          <MainContainer>
-            <ChatContainer>
-              <MessageList>
-                <Message
-                  model={{
-                    message: "Customer service: Hello there! How can I help you?",
-                    sentTime: "just now",
-                    sender: "Joe",
-                    direction: "incoming",
-                    position: "single",
-                  }}
-                />
-              </MessageList>
-              <MessageInput placeholder="Type message here" onKeyDown={(event) => event.stopPropagation()}/>
-            </ChatContainer>
-          </MainContainer>
+          <ChatComponent />
         </div>
       )}
       <button className="modalButton" onClick={() => setIsOpen(!isOpen)}>
