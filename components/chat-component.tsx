@@ -6,9 +6,12 @@ import {
   MessageInput,
 } from "@chatscope/chat-ui-kit-react";
 
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+
+
 const ChatComponent = () => {
   return (
-    <MainContainer style={{fontSize: "1.2em"}}>
+    <MainContainer> 
       <ChatContainer>
         <MessageList>
           <Message
