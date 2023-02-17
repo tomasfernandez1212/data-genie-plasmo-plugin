@@ -10,7 +10,6 @@ import bootstrapStyles from "data-text:bootstrap/dist/css/bootstrap.min.css";
 import modalContainerStyles from "data-text:./modal-container.css";
 
 import ChatComponent from "../components/chat-component"
-import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
@@ -21,7 +20,7 @@ export const config: PlasmoCSConfig = {
 // Inject into the ShadowDOM
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style")
-  style.textContent = bootstrapStyles + modalContainerStyles + chatKitStyles
+  style.textContent = bootstrapStyles + modalContainerStyles 
   return style
 }
 
