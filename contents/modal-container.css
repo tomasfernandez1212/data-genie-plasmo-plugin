@@ -1,3 +1,22 @@
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0) !important;
 }
+
+.datagenie-modal {
+  width: 40% !important;
+  max-width: none;
+
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 90px !important;
+  margin: 0px !important;
+}
+
+#datagenie-modal-button {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  border-radius: 25px;
+  width: 50px;
+  height: 50px;
+}
