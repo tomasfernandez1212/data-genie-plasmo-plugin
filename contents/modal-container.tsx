@@ -1,20 +1,18 @@
 import type { PlasmoGetStyle } from "plasmo"
 import type { PlasmoCSConfig } from "plasmo"
+
 import { useEffect, useState} from "react"
-
-import ChatComponent from "../components/chat-component"
-import collapseWindowStyle from "data-text:~/contents/modal-container.css"
-import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import bootstrapStyles from "data-text:bootstrap/dist/css/bootstrap.min.css";
-
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-// Import React
-import React from "react"
+import bootstrapStyles from "data-text:bootstrap/dist/css/bootstrap.min.css";
+
+import ChatComponent from "../components/chat-component"
+import chatKitStyles from "data-text:@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
   matches: ["*://*/*.ipynb"],
+  css: ["modal-container.css"]
 }
 
 // Inject into the ShadowDOM
@@ -23,7 +21,6 @@ export const getStyle: PlasmoGetStyle = () => {
   style.textContent = bootstrapStyles
   return style
 }
-
 
 function MyVerticallyCenteredModal(props) {
   return (
@@ -56,7 +53,7 @@ function MyVerticallyCenteredModal(props) {
 
 
 const DataGenieModal = () => {
-  const [modalShow, setModalShow] = React.useState(true);
+  const [modalShow, setModalShow] = useState(true);
 
   return (
     <>
