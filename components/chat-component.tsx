@@ -29,6 +29,16 @@ const ChatComponent = () => {
     }
   ]);
 
+  const handleUserMessageSend = (message: string) => {
+    setMessages([...messages, {
+      message: message,
+      sentTime: "just now",
+      sender: "User",
+      direction: "outgoing",
+      position: "single",
+    }])
+  }
+
   return (
     <MainContainer responsive={true}> 
       <ChatContainer>
@@ -43,7 +53,9 @@ const ChatComponent = () => {
             <Message key={index} model={message} />
           ))}
         </MessageList>
-        <MessageInput placeholder="Type message here" attachButton={false} sendButton={true} autoFocus={true} onKeyDown={(event) => event.stopPropagation()}/>
+        <MessageInput placeholder="Type message here" attachButton={false} 
+        sendButton={true} autoFocus={true} onKeyDown={(event) => event.stopPropagation()}
+        onSend={(message) => handleUserMessageSend(message)}/>
       </ChatContainer>
     </MainContainer>
   );
