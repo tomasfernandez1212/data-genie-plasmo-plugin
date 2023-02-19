@@ -32,6 +32,7 @@ const DataGenieModal = () => {
 
   // Define the state for the modal
   const [modalShow, setModalShow] = useState(false);
+  const [isTyping, setIsTyping] = useState(false)
   const [messages, setMessages] = useState<MessageModel[]>(initMessagesList);
   const [parsedNotebook, setParsedNotebook] = useState<[]>([])
 
@@ -44,7 +45,7 @@ const DataGenieModal = () => {
       <Modal show={modalShow} onHide={() => setModalShow(false)}
       aria-labelledby="contained-modal-title-vcenter" animation={false}
       dialogClassName="datagenie-modal">
-        <ChatComponent messages={messages} setMessages={setMessages} setParsedNotebook={setParsedNotebook} />
+        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} setParsedNotebook={setParsedNotebook} />
       </Modal>
     </>
 )}

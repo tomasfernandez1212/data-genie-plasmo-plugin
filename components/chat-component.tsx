@@ -30,15 +30,15 @@ export const initMessagesList: MessageModel[] = [
 ]
 
 type ChatComponentProps = {
+  isTyping: boolean;
+  setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   messages: MessageModel[];
   setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
   setParsedNotebook: React.Dispatch<React.SetStateAction<CellDataInterface[]>>;
 };
 
-export const ChatComponent = ({ messages, setMessages, setParsedNotebook }: ChatComponentProps) => {
-  
-  const [isTyping, setIsTyping] = useState(true)
-  
+export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, setParsedNotebook }: ChatComponentProps) => {
+
   const handleUserMessageSend = (message: string) => {
 
     // Add the user message to the messages list
