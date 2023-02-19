@@ -4,7 +4,7 @@
 
 .datagenie-modal {
   width: 40% !important;
-  max-width: none;
+  max-width: 400px;
 
   position: fixed !important;
   right: 20px !important;
