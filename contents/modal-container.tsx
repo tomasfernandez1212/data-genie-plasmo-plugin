@@ -45,7 +45,7 @@ const DataGenieModal = () => {
       <Modal show={modalShow} onHide={() => setModalShow(false)}
       aria-labelledby="contained-modal-title-vcenter" animation={false}
       dialogClassName="datagenie-modal">
-        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} setParsedNotebook={setParsedNotebook} />
+        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} parsedNotebook={parsedNotebook} setParsedNotebook={setParsedNotebook} />
       </Modal>
     </>
 )}

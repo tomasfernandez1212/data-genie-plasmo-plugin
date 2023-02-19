@@ -34,10 +34,11 @@ type ChatComponentProps = {
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   messages: MessageModel[];
   setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
+  parsedNotebook: CellDataInterface[];
   setParsedNotebook: React.Dispatch<React.SetStateAction<CellDataInterface[]>>;
 };
 
-export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, setParsedNotebook }: ChatComponentProps) => {
+export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, parsedNotebook, setParsedNotebook }: ChatComponentProps) => {
 
   const handleUserMessageSend = (message: string) => {
 
@@ -55,6 +56,20 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, se
 
     // Get the data from the notebook
     setParsedNotebook(getAllCellsData())
+
+    // Request the data genie to respond
+    fetch("http://localhost:5000/datagenie", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        messages: messages,
+        userMessage: message,
+        parsedNotebook: parsedNotebook
+      })
+    })
+      .then(response => console.log(response.json()))
   }
 
   return (
