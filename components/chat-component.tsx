@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import {
   MainContainer,
   ConversationHeader,
@@ -14,16 +16,20 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import dataGenieThumbnail from "../assets/datagenie-thumbnail.png"
 
 const ChatComponent = () => {
+
+  
+  const [isTyping, setIsTyping] = useState(true)
+
   return (
     <MainContainer responsive={true}> 
       <ChatContainer>
         <ConversationHeader>
-              <Avatar src={dataGenieThumbnail} name="Data Genie" />
-              <ConversationHeader.Content>
-                <span >Data Genie</span>
-              </ConversationHeader.Content>
-          </ConversationHeader>
-        <MessageList typingIndicator={<TypingIndicator content="Eliot is typing" />}>
+            <Avatar src={dataGenieThumbnail} name="Data Genie" />
+            <ConversationHeader.Content>
+              <span >Data Genie</span>
+            </ConversationHeader.Content>
+        </ConversationHeader>
+        <MessageList typingIndicator={isTyping ? <TypingIndicator content="Data Genie is typing" /> : null}>
           <Message
             model={{
               message: "Customer service: Hello there! How can I help you?",
