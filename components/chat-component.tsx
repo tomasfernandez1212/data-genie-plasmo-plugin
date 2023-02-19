@@ -14,7 +14,7 @@ import {
 
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
-import dataGenieThumbnail from "../assets/datagenie-thumbnail.png"
+import dataGenieThumbnail from "url:../assets/datagenie-thumbnail.png"
 
 export const initMessagesList: MessageModel[] = [
   {
