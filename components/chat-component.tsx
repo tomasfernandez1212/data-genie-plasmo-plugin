@@ -16,19 +16,25 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import dataGenieThumbnail from "../assets/datagenie-thumbnail.png"
 
-const ChatComponent = () => {
+export const initMessagesList: MessageModel[] = [
+  {
+    message: "Hello there! How can I help you?",
+    sentTime: "just now",
+    sender: "Data Genie",
+    direction: "incoming",
+    position: "single",
+  }
+]
+
+type ChatComponentProps = {
+  messages: MessageModel[];
+  setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
+};
+
+export const ChatComponent = ({ messages, setMessages }: ChatComponentProps) => {
   
   const [isTyping, setIsTyping] = useState(true)
-  const [messages, setMessages] = useState<MessageModel[]>([
-    {
-      message: "Hello there! How can I help you?",
-      sentTime: "just now",
-      sender: "Data Genie",
-      direction: "incoming",
-      position: "single",
-    }
-  ]);
-
+  
   const handleUserMessageSend = (message: string) => {
     setMessages([...messages, {
       message: message,
@@ -55,10 +61,9 @@ const ChatComponent = () => {
         </MessageList>
         <MessageInput placeholder="Type message here" attachButton={false} 
         sendButton={true} autoFocus={true} onKeyDown={(event) => event.stopPropagation()}
-        onSend={(message) => handleUserMessageSend(message)}/>
+        onSend={handleUserMessageSend}/>
       </ChatContainer>
     </MainContainer>
   );
 }
 
-export default ChatComponent;

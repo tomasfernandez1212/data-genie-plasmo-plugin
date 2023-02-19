@@ -9,7 +9,8 @@ import bootstrapStyles from "data-text:bootstrap/dist/css/bootstrap.min.css";
 // To override styles, need to use in plasmo config and get style
 import modalContainerStyles from "data-text:./modal-container.css";
 
-import ChatComponent from "../components/chat-component"
+import { ChatComponent, initMessagesList } from "../components/chat-component"
+import type { MessageModel } from "@chatscope/chat-ui-kit-react";
 
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
@@ -24,9 +25,9 @@ export const getStyle: PlasmoGetStyle = () => {
   return style
 }
 
-
 const DataGenieModal = () => {
   const [modalShow, setModalShow] = useState(false);
+  const [messages, setMessages] = useState<MessageModel[]>(initMessagesList);
 
   return (
     <>
@@ -37,7 +38,7 @@ const DataGenieModal = () => {
       <Modal show={modalShow} onHide={() => setModalShow(false)}
       aria-labelledby="contained-modal-title-vcenter" animation={false}
       dialogClassName="datagenie-modal">
-        <ChatComponent />
+        <ChatComponent messages={messages} setMessages={setMessages} />
       </Modal>
     </>
 )}
