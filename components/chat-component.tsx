@@ -57,17 +57,16 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, pa
     // Get the data from the notebook
     setParsedNotebook(getAllCellsData())
 
+    const body = JSON.stringify({
+      messages: messages,
+      parsedNotebook: parsedNotebook
+    })
+
     // Request the data genie to respond
-    fetch("http://localhost:5000/datagenie", {
+    fetch("http://localhost:8050/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        messages: messages,
-        userMessage: message,
-        parsedNotebook: parsedNotebook
-      })
+      headers: {"Content-Type": "application/json"},
+      body: body
     })
       .then(response => console.log(response.json()))
   }
