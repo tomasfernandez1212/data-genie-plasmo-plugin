@@ -14,7 +14,16 @@ function getAllCells(): HTMLCollectionOf<Element> {
 export interface CellDataInterface {
     cell_index: number;
     cell_type: string;
-    cell_content: string;
+    cell_content: CodeCellInterface | TextCellInterface;
+}
+
+export interface CodeCellInterface {
+  cell_input: string;
+  cell_output: string;
+}
+
+export interface TextCellInterface {
+  cell_text: string;
 }
 
 /**
@@ -27,23 +36,30 @@ function extractDataFromCell(i: number, cell: Element): { cell_index: number, ce
   // Create cellData object
   const cellData = {
     "cell_index": i,
-    "cell_type": 'NaN',
-    "cell_content": 'NaN'
+    "cell_type": null, 
+    "cell_content": null
   };
 
   // Find cell type
-  let cellType = "code_cell";
+  let cellType= "code_cell";
   if (cell.classList.contains('text_cell')) {
     cellType = "text_cell";
   }
 
   // Get cell content
-  let cellContent = '';
+  let cellContent: CodeCellInterface | TextCellInterface = null;
   if (cellType == "code_cell") {
-    cellContent = (cell as HTMLElement).innerText; // Use type assertion
+    const cell_input = (cell.querySelector("div.input > div.inner_cell > div.input_area") as HTMLElement).outerText;
+    const cell_output = (cell.querySelector("div.input > div.inner_cell > div.input_area") as HTMLElement).outerText; // TODO: Change this to output_area
+    cellContent = {
+      "cell_input": cell_input,
+      "cell_output": cell_output
+    };
   } else {
     const cellHtml = cell.getElementsByClassName('text_cell_render')[0].outerHTML;
-    cellContent = turndownService.turndown(cellHtml);
+    cellContent = {
+      "cell_text": turndownService.turndown(cellHtml)
+    }
   }
 
   // Add to cellData

@@ -85,8 +85,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       parsedNotebook: parsedNotebook
     })
 
-    console.log(body)
-    console.log(latestMessage)
+    console.log(parsedNotebook)
 
     // Request the data genie to respond
     fetch("http://localhost:8050/", {
@@ -94,7 +93,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       headers: {"Content-Type": "application/json"},
       body: body
     })
-      .then(response => console.log(response.json()))
+      .then(response => console.log("Resonse received."))
   }
 
   return (
