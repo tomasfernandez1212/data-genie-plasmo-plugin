@@ -32,7 +32,7 @@ export interface TextCellInterface {
  * @param cell The cell element to extract data from.
  * @returns An object containing cell index, type, and content.
  */
-function extractDataFromCell(i: number, cell: Element): { cell_index: number, cell_type: string, cell_content: string } {
+function extractDataFromCell(i: number, cell: Element): CellDataInterface {
   // Create cellData object
   const cellData = {
     "cell_index": i,
