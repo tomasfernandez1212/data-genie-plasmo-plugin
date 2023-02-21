@@ -34,31 +34,31 @@ type ChatComponentProps = {
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   messages: MessageModel[];
   setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
-  parsedNotebook: CellDataInterface[];
-  setParsedNotebook: React.Dispatch<React.SetStateAction<CellDataInterface[]>>;
 };
 
-export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, parsedNotebook, setParsedNotebook }: ChatComponentProps) => {
+export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: ChatComponentProps) => {
 
   const handleUserMessageSend = (message: string) => {
 
     // Add the user message to the messages list
-    setMessages([...messages, {
-      message: message,
-      sentTime: "just now",
-      sender: "User",
-      direction: "outgoing",
-      position: "single",
-    }])
+    const latestMessage: MessageModel = {
+        message: message,
+        sentTime: "just now",
+        sender: "User",
+        direction: "outgoing",
+        position: "single",
+    }
+    setMessages([...messages, latestMessage])
 
     // Set the typing indicator to true
     setIsTyping(true)
 
     // Get the data from the notebook
-    setParsedNotebook(getAllCellsData())
+    const parsedNotebook = getAllCellsData()
 
     const body = JSON.stringify({
-      messages: messages,
+      pastMessages: messages,
+      latestMessage: latestMessage,
       parsedNotebook: parsedNotebook
     })
 
