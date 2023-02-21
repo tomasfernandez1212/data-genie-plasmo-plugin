@@ -29,6 +29,27 @@ export const initMessagesList: MessageModel[] = [
   }
 ]
 
+const cleanUserInput = (input: string) => {
+
+  // HTML Entities
+  var cleanInput = input.replace(/&nbsp;|&#160;/gi, "")
+
+  // // Prevent XSS (cross-site scripting) attack
+  // cleanInput = cleanInput.replace(/<\/?[^>]+(>|$)/g, "")
+
+  // // Prevent SQL injection attack
+  // cleanInput = cleanInput.replace(/'/g, "''")
+
+  // // Control Characters (such as carriage returns, line feeds, tabs, and form feeds)
+  // cleanInput = cleanInput.replace(/[\n\r\t\f]/g, "")
+
+  // // Unicode Characters
+  // cleanInput = cleanInput.replace(/[^\x00-\x7F]/g, "")
+
+  return cleanInput
+}
+
+
 type ChatComponentProps = {
   isTyping: boolean;
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,9 +61,11 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
 
   const handleUserMessageSend = (message: string) => {
 
+    const cleanMessage = cleanUserInput(message)
+
     // Add the user message to the messages list
     const latestMessage: MessageModel = {
-        message: message,
+        message: cleanMessage,
         sentTime: "just now",
         sender: "User",
         direction: "outgoing",
@@ -61,6 +84,9 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       latestMessage: latestMessage,
       parsedNotebook: parsedNotebook
     })
+
+    console.log(body)
+    console.log(latestMessage)
 
     // Request the data genie to respond
     fetch("http://localhost:8050/", {
