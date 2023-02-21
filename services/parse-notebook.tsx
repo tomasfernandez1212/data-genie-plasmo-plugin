@@ -50,7 +50,7 @@ function extractDataFromCell(i: number, cell: Element): { cell_index: number, ce
   let cellContent: CodeCellInterface | TextCellInterface = null;
   if (cellType == "code_cell") {
     const cell_input = (cell.querySelector("div.input > div.inner_cell > div.input_area") as HTMLElement).outerText;
-    const cell_output = (cell.querySelector("div.input > div.inner_cell > div.input_area") as HTMLElement).outerText; // TODO: Change this to output_area
+    const cell_output = (cell.querySelector("div.output_wrapper") as HTMLElement).outerText; 
     cellContent = {
       "cell_input": cell_input,
       "cell_output": cell_output
