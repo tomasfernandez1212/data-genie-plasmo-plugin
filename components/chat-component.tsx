@@ -93,7 +93,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       headers: {"Content-Type": "application/json"},
       body: body
     })
-      .then(response => console.log("Resonse received."))
+      .then(response => console.log(response))
   }
 
   return (
