@@ -59,6 +59,28 @@ type ChatComponentProps = {
 
 export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: ChatComponentProps) => {
 
+  const handleBackendResponse = (response: any) => {
+    
+    response.json().then((responseJson: any) => {
+      
+      console.log(responseJson)
+
+      // Add the message to the messages list
+      const latestMessage: MessageModel = {
+          message: responseJson.natural_language_response,
+          sentTime: "just now",
+          sender: "Data Genie",
+          direction: "incoming",
+          position: "single",
+      }
+      setMessages(prevMessages => [...prevMessages, latestMessage])
+  
+      // Set the typing indicator to false
+      setIsTyping(false)
+    })
+
+  }
+  
   const handleUserMessageSend = (message: string) => {
 
     const cleanMessage = cleanUserInput(message)
@@ -71,7 +93,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
         direction: "outgoing",
         position: "single",
     }
-    setMessages([...messages, latestMessage])
+    setMessages(prevMessages => [...prevMessages, latestMessage])
 
     // Set the typing indicator to true
     setIsTyping(true)
@@ -93,7 +115,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       headers: {"Content-Type": "application/json"},
       body: body
     })
-      .then(response => console.log(response))
+      .then(response => handleBackendResponse(response))
   }
 
   return (
