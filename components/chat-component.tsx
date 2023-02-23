@@ -29,6 +29,15 @@ export const initMessagesList: MessageModel[] = [
   }
 ]
 
+document.addEventListener("keydown", (event: KeyboardEvent) => {
+  console.log("keydown event", event);
+});
+
+document.addEventListener("click", (event: MouseEvent) => {
+  console.log("click event", event);
+});
+
+
 const cleanUserInput = (input: string) => {
 
   // HTML Entities
@@ -72,23 +81,93 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
         const cellIndex = instruction.cell_index
         const cellUpdated = instruction.updated_cell
 
-        // Update the cell
+        // Get cells
         const cells = getAllCells()
-        const cell = cells[cellIndex]
 
-        if (cell) {
+        // // Single click the cell 
+        const cell: any = cells[cellIndex]
+        const clickCellEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          button: 0, // left mouse button
+          detail: 1, // single click
+        });
+        cell.dispatchEvent(clickCellEvent);
 
-          // Double Click the cell to enter edit mode
-          const editCellEvent = new MouseEvent('dblclick', {
+        // Shortcut 'enter' to edit the cell
+        const keydownEvent = new KeyboardEvent('keydown', {
+          bubbles: true,
+          composed: true,
+          cancelable: true,
+          view: window,
+          key: "Enter",
+          code: "Enter",
+          charCode: 0,
+          keyCode: 13,
+          shiftKey: false,
+        });
+        cell.focus();
+        cell.dispatchEvent(keydownEvent);
+
+        const textArea = document.activeElement as HTMLTextAreaElement
+
+        // // Type the new cell content
+        const inputString = "hello";
+        for (let i = 0; i < inputString.length; i++) {
+
+          const char = inputString.charAt(i);
+          const charUpper = char.toUpperCase();
+
+          console.log("char", char)
+          console.log("charUpper", charUpper)
+          
+
+          const keyPressEvent = new KeyboardEvent("keydown", {
+            altKey: false,
             bubbles: true,
             cancelable: true,
-            view: window
+            charCode: 0,
+            code: "KeyH", 
+            composed: true,
+            ctrlKey: false,
+            key: "h",
+            keyCode: 72,
+            location: 0,
+            metaKey: false,
+            repeat: false,
+            shiftKey: false,
+            view: window,
+            which: char.charCodeAt(0),
           });
-          cell.dispatchEvent(editCellEvent);
+          textArea.focus();
+          textArea.dispatchEvent(keyPressEvent);
+
+          console.log("keyPressEvent", char)
+
+          const keyUpEvent = new KeyboardEvent("keyup", {
+            altKey: false,
+            bubbles: true,
+            cancelable: true,
+            charCode: 0,
+            code: "KeyH", 
+            composed: true,
+            ctrlKey: false,
+            key: "h",
+            keyCode: 72,
+            location: 0,
+            metaKey: false,
+            repeat: false,
+            shiftKey: false,
+            view: window,
+            which: char.charCodeAt(0),
+          });
+          textArea.focus();
+          textArea.dispatchEvent(keyUpEvent);
         }
+
       }
     })
-
 
   }
 
