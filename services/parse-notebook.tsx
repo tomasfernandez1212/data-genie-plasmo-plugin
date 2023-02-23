@@ -6,7 +6,7 @@ const turndownService = new TurndownService();
 /**
  * Returns all elements with class "cell".
  */
-function getAllCells(): HTMLCollectionOf<Element> {
+export function getAllCells(): HTMLCollectionOf<Element> {
   return document.getElementsByClassName('cell');
 }
 

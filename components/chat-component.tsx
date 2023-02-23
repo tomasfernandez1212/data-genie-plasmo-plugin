@@ -17,7 +17,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import dataGenieThumbnail from "url:../assets/datagenie-thumbnail.png"
 
 // Services Imports
-import { getAllCellsData, CellDataInterface } from "../services/parse-notebook"
+import { getAllCellsData, getAllCells } from "../services/parse-notebook"
 
 export const initMessagesList: MessageModel[] = [
   {
@@ -59,6 +59,40 @@ type ChatComponentProps = {
 
 export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: ChatComponentProps) => {
 
+  const handleBackendInstructions = (instructions: any) => {
+
+    // If there are no instructions, return
+    if (instructions.length === 0) {
+      return
+    }
+
+    // If there are instructions, execute them
+    instructions.forEach((instruction: any) => {
+      if (instruction.action === "update") {
+        const cellIndex = instruction.cell_index
+        const cellUpdated = instruction.updated_cell
+
+        // Update the cell
+        const cells = getAllCells()
+        const cell = cells[cellIndex]
+
+        if (cell) {
+
+          // Double Click the cell to enter edit mode
+          const editCellEvent = new MouseEvent('dblclick', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+          });
+          cell.dispatchEvent(editCellEvent);
+        }
+      }
+    })
+
+
+  }
+
+
   const handleBackendResponse = (response: any) => {
     
     response.json().then((responseJson: any) => {
@@ -77,6 +111,9 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
   
       // Set the typing indicator to false
       setIsTyping(false)
+
+      handleBackendInstructions(responseJson.instructions)
+
     })
 
   }
