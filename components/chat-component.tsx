@@ -123,8 +123,6 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       parsedNotebook: parsedNotebook
     })
 
-    console.log(parsedNotebook)
-
     // Request the data genie backend to respond
     // fetch("http://localhost:8050/", {
     //   method: "POST",
@@ -139,7 +137,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
         {
           "action": "update",
           "cell_index": 0,
-          "updated_cell": "# This is a markdown text cell: "
+          "updated_cell": "# After the assistant modifies the notebook:"
         },
         {
           "action": "update",
