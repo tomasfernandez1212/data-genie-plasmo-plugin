@@ -29,14 +29,17 @@ export const initMessagesList: MessageModel[] = [
   }
 ]
 
-document.addEventListener("keydown", (event: KeyboardEvent) => {
-  console.log("keydown event", event);
-});
 
-document.addEventListener("click", (event: MouseEvent) => {
-  console.log("click event", event);
-});
 
+// chrome.tabs.executeScript({
+//   code: 'jupyterCell = Jupyter.notebook.get_selected_cell()'
+// }, function(results) {
+//   console.log(results);
+// });
+
+// document.addEventListener("click", (event: MouseEvent) => {
+//   console.log("click event", event);
+// });
 
 const cleanUserInput = (input: string) => {
 
@@ -56,6 +59,57 @@ const cleanUserInput = (input: string) => {
   // cleanInput = cleanInput.replace(/[^\x00-\x7F]/g, "")
 
   return cleanInput
+}
+
+function getElementByXpath(path): any {
+  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+}
+
+const dblClickEvent = new MouseEvent('dblclick', {
+  view: window,
+  bubbles: true,
+  cancelable: true
+});
+
+const clickEvent = new MouseEvent('click', {
+  view: window,
+  bubbles: true,
+  cancelable: true
+});
+
+const typeEvent = new KeyboardEvent('keydown', {
+  view: window,
+  bubbles: true,
+  cancelable: true,
+  key: '!',
+  code: 'Key!',
+  location: 0,
+  ctrlKey: false,
+  shiftKey: false,
+  altKey: false,
+  metaKey: false,
+  repeat: false,
+  isComposing: false,
+  charCode: 33,
+  keyCode: 33,
+  which: 33
+});
+
+const runSequence = async () => {
+
+  var blurElement: any = document.getElementsByClassName("cs-message-input__content-editor")[0]
+  console.log(blurElement)
+  await blurElement.blur();
+
+  var activeElement: any = document.getElementsByClassName("notebook_app command_mode")[0]
+  console.log(activeElement)
+  await activeElement.focus();
+
+  await getElementByXpath("//div[@id='notebook-container']/div[2]/div").dispatchEvent(clickEvent);
+  await getElementByXpath("//div[@id='notebook-container']/div[2]/div").dispatchEvent(dblClickEvent);
+  // await getElementByXpath("//div[@id='notebook-container']/div[2]/div[2]/div[2]/div/div[6]/div/div/div/div/div[5]/pre/span").dispatchEvent(clickEvent);
+
+
 }
 
 
@@ -81,91 +135,10 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
         const cellIndex = instruction.cell_index
         const cellUpdated = instruction.updated_cell
 
-        // Get cells
-        const cells = getAllCells()
-
-        // // Single click the cell 
-        const cell: any = cells[cellIndex]
-        const clickCellEvent = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-          button: 0, // left mouse button
-          detail: 1, // single click
-        });
-        cell.dispatchEvent(clickCellEvent);
-
-        // Shortcut 'enter' to edit the cell
-        const keydownEvent = new KeyboardEvent('keydown', {
-          bubbles: true,
-          composed: true,
-          cancelable: true,
-          view: window,
-          key: "Enter",
-          code: "Enter",
-          charCode: 0,
-          keyCode: 13,
-          shiftKey: false,
-        });
-        cell.focus();
-        cell.dispatchEvent(keydownEvent);
-
-        const textArea = document.activeElement as HTMLTextAreaElement
-
-        // // Type the new cell content
-        const inputString = "hello";
-        for (let i = 0; i < inputString.length; i++) {
-
-          const char = inputString.charAt(i);
-          const charUpper = char.toUpperCase();
-
-          console.log("char", char)
-          console.log("charUpper", charUpper)
-          
-
-          const keyPressEvent = new KeyboardEvent("keydown", {
-            altKey: false,
-            bubbles: true,
-            cancelable: true,
-            charCode: 0,
-            code: "KeyH", 
-            composed: true,
-            ctrlKey: false,
-            key: "h",
-            keyCode: 72,
-            location: 0,
-            metaKey: false,
-            repeat: false,
-            shiftKey: false,
-            view: window,
-            which: char.charCodeAt(0),
-          });
-          textArea.focus();
-          textArea.dispatchEvent(keyPressEvent);
-
-          console.log("keyPressEvent", char)
-
-          const keyUpEvent = new KeyboardEvent("keyup", {
-            altKey: false,
-            bubbles: true,
-            cancelable: true,
-            charCode: 0,
-            code: "KeyH", 
-            composed: true,
-            ctrlKey: false,
-            key: "h",
-            keyCode: 72,
-            location: 0,
-            metaKey: false,
-            repeat: false,
-            shiftKey: false,
-            view: window,
-            which: char.charCodeAt(0),
-          });
-          textArea.focus();
-          textArea.dispatchEvent(keyUpEvent);
-        }
-
+        // Update the cell
+        console.log("Updating cell")
+        runSequence()
+        
       }
     })
 
