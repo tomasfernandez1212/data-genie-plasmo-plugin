@@ -30,86 +30,12 @@ export const initMessagesList: MessageModel[] = [
 ]
 
 
-
-// chrome.tabs.executeScript({
-//   code: 'jupyterCell = Jupyter.notebook.get_selected_cell()'
-// }, function(results) {
-//   console.log(results);
-// });
-
-// document.addEventListener("click", (event: MouseEvent) => {
-//   console.log("click event", event);
-// });
-
 const cleanUserInput = (input: string) => {
 
   // HTML Entities
   var cleanInput = input.replace(/&nbsp;|&#160;/gi, "")
 
-  // // Prevent XSS (cross-site scripting) attack
-  // cleanInput = cleanInput.replace(/<\/?[^>]+(>|$)/g, "")
-
-  // // Prevent SQL injection attack
-  // cleanInput = cleanInput.replace(/'/g, "''")
-
-  // // Control Characters (such as carriage returns, line feeds, tabs, and form feeds)
-  // cleanInput = cleanInput.replace(/[\n\r\t\f]/g, "")
-
-  // // Unicode Characters
-  // cleanInput = cleanInput.replace(/[^\x00-\x7F]/g, "")
-
   return cleanInput
-}
-
-function getElementByXpath(path): any {
-  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-}
-
-const dblClickEvent = new MouseEvent('dblclick', {
-  view: window,
-  bubbles: true,
-  cancelable: true
-});
-
-const clickEvent = new MouseEvent('click', {
-  view: window,
-  bubbles: true,
-  cancelable: true
-});
-
-const typeEvent = new KeyboardEvent('keydown', {
-  view: window,
-  bubbles: true,
-  cancelable: true,
-  key: '!',
-  code: 'Key!',
-  location: 0,
-  ctrlKey: false,
-  shiftKey: false,
-  altKey: false,
-  metaKey: false,
-  repeat: false,
-  isComposing: false,
-  charCode: 33,
-  keyCode: 33,
-  which: 33
-});
-
-const runSequence = async () => {
-
-  var blurElement: any = document.getElementsByClassName("cs-message-input__content-editor")[0]
-  console.log(blurElement)
-  await blurElement.blur();
-
-  var activeElement: any = document.getElementsByClassName("notebook_app command_mode")[0]
-  console.log(activeElement)
-  await activeElement.focus();
-
-  await getElementByXpath("//div[@id='notebook-container']/div[2]/div").dispatchEvent(clickEvent);
-  await getElementByXpath("//div[@id='notebook-container']/div[2]/div").dispatchEvent(dblClickEvent);
-  // await getElementByXpath("//div[@id='notebook-container']/div[2]/div[2]/div[2]/div/div[6]/div/div/div/div/div[5]/pre/span").dispatchEvent(clickEvent);
-
-
 }
 
 
@@ -132,12 +58,13 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
     // If there are instructions, execute them
     instructions.forEach((instruction: any) => {
       if (instruction.action === "update") {
+
         const cellIndex = instruction.cell_index
         const cellUpdated = instruction.updated_cell
 
-        // Update the cell
+        // Update the cell - TODO: Write cellUpdated string into the cellIndex cell
         console.log("Updating cell")
-        runSequence()
+        
         
       }
     })
@@ -198,13 +125,35 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
 
     console.log(parsedNotebook)
 
-    // Request the data genie to respond
-    fetch("http://localhost:8050/", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: body
-    })
-      .then(response => handleBackendResponse(response))
+    // Request the data genie backend to respond
+    // fetch("http://localhost:8050/", {
+    //   method: "POST",
+    //   headers: {"Content-Type": "application/json"},
+    //   body: body
+    // })
+    //   .then(response => handleBackendResponse(response))
+
+    const mockResponse = new Response(JSON.stringify({
+      "natural_language_response": "I have updated the cells with index 0 and 1.",
+      "instructions": [
+        {
+          "action": "update",
+          "cell_index": 0,
+          "updated_cell": "# This is a markdown text cell: "
+        },
+        {
+          "action": "update",
+          "cell_index": 1,
+          "updated_cell": "print(\"Hello World\")"
+        }
+      ]
+    }), {
+      status: 200,
+      headers: { 'Content-type': 'application/json' },
+    });
+
+    handleBackendResponse(mockResponse)
+
   }
 
   return (
