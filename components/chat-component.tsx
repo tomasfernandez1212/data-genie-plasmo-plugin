@@ -18,6 +18,7 @@ import dataGenieThumbnail from "url:../assets/datagenie-thumbnail.png"
 
 // Services Imports
 import { getAllCellsData, getAllCells } from "../services/parse-notebook"
+import { codeCellEdit } from "../services/events"
 
 export const initMessagesList: MessageModel[] = [
   {
@@ -28,7 +29,6 @@ export const initMessagesList: MessageModel[] = [
     position: "single",
   }
 ]
-
 
 const cleanUserInput = (input: string) => {
 
@@ -65,6 +65,23 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
         // Update the cell - TODO: Write cellUpdated string into the cellIndex cell
         console.log("Updating cell")
         
+        // Get the cell
+        const cell = document.querySelectorAll(".cell")[cellIndex]
+
+        console.log(cell)
+
+        if (instruction.cell_type === "text_cell") {
+          console.log("Text cell")
+        } else if (instruction.cell_type === "code_cell") {
+          codeCellEdit(cell)
+        }
+        else {
+          console.log("Unknown cell type")
+        }
+
+
+        // const selectedCell = document.querySelector("div.cell.text_cell.selected.unrendered")
+        // selectedCell.dispatchEvent(enterEvent)
         
       }
     })
@@ -134,14 +151,16 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
     const mockResponse = new Response(JSON.stringify({
       "natural_language_response": "I have updated the cells with index 0 and 1.",
       "instructions": [
-        {
-          "action": "update",
-          "cell_index": 0,
-          "updated_cell": "# After the assistant modifies the notebook:"
-        },
+        // {
+        //   "action": "update",
+        //   "cell_index": 0,
+        //   "cell_type": "text_cell",
+        //   "updated_cell": "# After the assistant modifies the notebook:"
+        // },
         {
           "action": "update",
           "cell_index": 1,
+          "cell_type": "code_cell",
           "updated_cell": "print(\"Hello World\")"
         }
       ]
