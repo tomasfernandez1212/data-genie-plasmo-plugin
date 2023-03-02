@@ -271,18 +271,24 @@ function sendKeys(cell: any): boolean {
 
 export function codeCellEdit(cell: any): boolean {
 
+    console.log("Editing cell: ", cell)
+
     dispatchEvent(window, "focus")
 
-    dispatchEvent(getFreshCodeMirrorLine(cell), "pointerDown")
-    dispatchEvent(getFreshCodeMirrorLine(cell), "mouseDown")
+    const textarea = cell.getElementsByTagName("textarea")[0]
+    textarea.focus()
+    textarea.click()
 
-    dispatchEvent(getFreshCodeMirrorLine(cell), "pointerOver")
-    dispatchEvent(getFreshCodeMirrorLine(cell), "mouseOver")
+    // dispatchEvent(getFreshCodeMirrorLine(cell), "pointerDown")
+    // dispatchEvent(getFreshCodeMirrorLine(cell), "mouseDown")
 
-    dispatchEvent(getFreshCodeMirrorLine(cell), "pointerUp")
-    dispatchEvent(getFreshCodeMirrorLine(cell), "mouseUp")
+    // dispatchEvent(getFreshCodeMirrorLine(cell), "pointerOver")
+    // dispatchEvent(getFreshCodeMirrorLine(cell), "mouseOver")
 
-    sendKeys(cell)
+    // dispatchEvent(getFreshCodeMirrorLine(cell), "pointerUp")
+    // dispatchEvent(getFreshCodeMirrorLine(cell), "mouseUp")
+
+    // sendKeys(cell)
 
     return true
 }
