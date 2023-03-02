@@ -15,9 +15,12 @@ import modalContainerStyles from "data-text:./modal-container.css";
 import { ChatComponent, initMessagesList } from "../components/chat-component"
 import type { MessageModel } from "@chatscope/chat-ui-kit-react";
 
+// Services Imports
+import { githubInput } from "../services/events"
+
 // Match any URL that ends with ipynb
 export const config: PlasmoCSConfig = {
-  matches: ["*://*/*.ipynb"],
+  matches: ["https://github.com/tomasfernandez1212/data-genie-plasmo-plugin/issues/1"],
   css: ["modal-container.css"]
 }
 
@@ -35,6 +38,8 @@ const DataGenieModal = () => {
   const [isTyping, setIsTyping] = useState(false)
   const [messages, setMessages] = useState<MessageModel[]>(initMessagesList);
   const [parsedNotebook, setParsedNotebook] = useState<[]>([])
+
+  githubInput()
 
   return (
     <>

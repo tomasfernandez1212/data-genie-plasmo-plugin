@@ -1,9 +1,19 @@
 
 // Create click event 
 const clickEvent = new MouseEvent('click', {
-    view: window,
+    altKey: false,
     bubbles: true,
-    cancelable: true
+    button: 0,
+    buttons: 0,
+    cancelable: true,
+    composed: true,
+    ctrlKey: false,
+    detail: 1,
+    metaKey: false,
+    movementX: 0,
+    movementY: 0,
+    shiftKey: false,
+    view: window
 });
   
   // Create a double click event
@@ -147,6 +157,25 @@ const keydownEvent = new KeyboardEvent('keydown', {
     which: 65
 });
 
+// Create Key Up Event
+const keyupEvent = new KeyboardEvent('keyup', {
+    bubbles: true,
+    altKey: false,
+    cancelable: true,
+    charCode: 0,
+    code: 'KeyA',
+    composed: true,
+    ctrlKey: false,
+    isComposing: false,
+    key: 'a',
+    keyCode: 65,
+    location: 0,
+    metaKey: false,
+    repeat: false,
+    shiftKey: false,
+    which: 65
+});
+
 // Create Key Press Event
 const keypressEvent = new KeyboardEvent('keypress', {
     altKey: false,
@@ -192,6 +221,7 @@ export function dispatchEvent(element: any, eventType: string): boolean {
         "enter": enterEvent,
         "focus": focusEvent,
         "keydown": keydownEvent,
+        "keyup": keyupEvent,
         "keypress": keypressEvent,
         "textInput": textInputEvent,
         "input": inputEvent,
@@ -214,7 +244,7 @@ export function dispatchEvent(element: any, eventType: string): boolean {
         return false
     }
 
-    console.log("Dispatching event: ", eventType)
+    console.log("Dispatching event: ", eventType, " on element: ", element)
     const eventResult = element.dispatchEvent(event)
 
     return eventResult
@@ -257,5 +287,22 @@ export function codeCellEdit(cell: any): boolean {
     return true
 }
 
+export function githubInput(): boolean {
 
+    dispatchEvent(window, "focus")
+    
+    const element = document.getElementById("new_comment_field")
+    element.focus()
+    element.click()
+    // dispatchEvent(element, "pointerDown")
+    // dispatchEvent(element, "mouseDown")
+    // dispatchEvent(element, "focus")
+    // dispatchEvent(element, "pointerUp")
+    // dispatchEvent(element, "mouseUp")
+    // dispatchEvent(element, "click")
+
+    (element as any).value = "Hello World"
+
+    return true
+}
 
