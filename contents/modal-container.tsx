@@ -1,6 +1,7 @@
 // Plasmo Imports
 import type { PlasmoGetStyle } from "plasmo"
 import type { PlasmoCSConfig } from "plasmo"
+import { usePort } from "@plasmohq/messaging/hook"
 
 // React Imports
 import { useEffect, useState} from "react"
@@ -36,9 +37,12 @@ const DataGenieModal = () => {
   const [messages, setMessages] = useState<MessageModel[]>(initMessagesList);
   const [parsedNotebook, setParsedNotebook] = useState<[]>([])
 
+  const mailPort = usePort("jupyter-background")
+  console.log("mailPort is: ", mailPort)
+
   return (
     <>
-      <Button id="datagenie-modal-button" variant="primary" onClick={() => setModalShow(!modalShow)}>
+      <Button id="datagenie-modal-button" variant="primary" onClick={() => {mailPort.send("hi")}}>
         {modalShow ? "Close" : "Open"}
       </Button>
 

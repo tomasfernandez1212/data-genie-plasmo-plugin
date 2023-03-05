@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@chatscope/chat-ui-kit-react': ^1.10.1
   '@chatscope/chat-ui-kit-styles': ^1.4.0
+  '@plasmohq/messaging': ^0.1.4
   '@plasmohq/prettier-plugin-sort-imports': 3.6.1
   '@types/chrome': 0.0.210
   '@types/node': 18.11.18
@@ -20,6 +21,7 @@ specifiers:
 dependencies:
   '@chatscope/chat-ui-kit-react': 1.10.1_biqbaboplfbrettd7655fr4n2y
   '@chatscope/chat-ui-kit-styles': 1.4.0
+  '@plasmohq/messaging': 0.1.4_react@18.2.0
   bootstrap: 5.2.3
   plasmo: 0.65.0_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -1649,6 +1651,17 @@ packages:
 
   /@plasmohq/init/0.6.0:
     resolution: {integrity: sha512-qoSRgQI5+IPBA3II7GDnc45bRycOZa7V7Gb/VrbE+ifXOplzyvdl7DWgH1OmUgzAoNtXcMcqUHILhhrTpX3PPw==}
+    dev: false
+
+  /@plasmohq/messaging/0.1.4_react@18.2.0:
+    resolution: {integrity: sha512-B51Hft6SBYu8oHq0X24/DTFGodzDcZfHeUWG3xNJmCcrBMlgUY1dctIQfLmrJWsaJA13nX3q3ek78SfsTdmyLA==}
+    peerDependencies:
+      react: ^16.8.6 || ^17 || ^18
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@plasmohq/parcel-bundler/0.4.6:
