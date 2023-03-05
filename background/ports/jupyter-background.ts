@@ -25,7 +25,7 @@ const handler: PlasmoMessaging.PortHandler = async (req, res) => {
             {
                 target: {tabId},
                 world: "MAIN", // MAIN in order to access the window object
-                func: () => {console.log("Jupyter", (window as any).Jupyter)},
+                func: () => {(window as any).Jupyter.notebook.insert_cell_above("code")},
             },
             () => {
                 console.log("Background script got callback after injection")
