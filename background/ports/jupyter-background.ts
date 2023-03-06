@@ -15,10 +15,17 @@ function getCurrentTabId() {
 }
 
 const handleInstruction = (req, res) => {
+
     console.log("handleInstruction");
     console.log(req);
     console.log(res);
-    (window as any).Jupyter.notebook.insert_cell_above("code");
+
+    const Jupyter = (window as any).Jupyter
+    Jupyter.notebook.insert_cell_above("code");
+
+    if (req.body.action === "update"){
+        Jupyter.notebook.get_cell(req.body.cell_index).set_text(req.body.updated_cell);
+    }
 }
 
 
