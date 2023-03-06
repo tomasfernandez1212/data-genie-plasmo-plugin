@@ -44,9 +44,10 @@ type ChatComponentProps = {
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   messages: MessageModel[];
   setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
+  mailPort: any;
 };
 
-export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: ChatComponentProps) => {
+export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, mailPort }: ChatComponentProps) => {
 
   const handleBackendInstructions = (instructions: any) => {
 
@@ -55,18 +56,10 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       return
     }
 
-    // If there are instructions, execute them
+    // If there are instructions, send to background
     instructions.forEach((instruction: any) => {
-      if (instruction.action === "update") {
-
-        const cellIndex = instruction.cell_index
-        const cellUpdated = instruction.updated_cell
-
-        // Update the cell - TODO: Write cellUpdated string into the cellIndex cell
-        console.log("Updating cell")
-        
-        
-      }
+      console.log("Sending instruction: ", instruction)
+      mailPort.send(instruction)
     })
 
   }

@@ -42,14 +42,14 @@ const DataGenieModal = () => {
 
   return (
     <>
-      <Button id="datagenie-modal-button" variant="primary" onClick={() => {mailPort.send("hi")}}>
+      <Button id="datagenie-modal-button" variant="primary" onClick={() => {setModalShow(!modalShow)}}>
         {modalShow ? "Close" : "Open"}
       </Button>
 
       <Modal show={modalShow} onHide={() => setModalShow(false)}
       aria-labelledby="contained-modal-title-vcenter" animation={false}
       dialogClassName="datagenie-modal">
-        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} />
+        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} mailPort={mailPort}/>
       </Modal>
     </>
 )}
