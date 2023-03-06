@@ -21,10 +21,20 @@ const handleInstruction = (req, res) => {
     console.log(res);
 
     const Jupyter = (window as any).Jupyter
-    Jupyter.notebook.insert_cell_above("code");
+    const instruction = req.body;
 
-    if (req.body.action === "update"){
-        Jupyter.notebook.get_cell(req.body.cell_index).set_text(req.body.updated_cell);
+    if (instruction.action === "update"){
+
+        // Get the cell
+        const cell = Jupyter.notebook.get_cell(instruction.cell_index)
+
+        // Modify the content of the cell
+        cell.set_text(instruction.updated_cell);
+
+        // Execute the cell - only if text_cell
+        if (instruction.cell_type === "text_cell"){
+            cell.execute();
+        }
     }
 }
 

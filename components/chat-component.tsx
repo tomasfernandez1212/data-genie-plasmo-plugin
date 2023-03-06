@@ -130,11 +130,13 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, ma
         {
           "action": "update",
           "cell_index": 0,
+          "cell_type": "text_cell",
           "updated_cell": "# After the assistant modifies the notebook:"
         },
         {
           "action": "update",
           "cell_index": 1,
+          "cell_type": "code_cell",
           "updated_cell": "print(\"Hello World\")"
         }
       ]
