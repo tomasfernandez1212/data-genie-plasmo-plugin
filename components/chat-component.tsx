@@ -21,9 +21,6 @@ import type { readRequestBody, readResponseBody } from "~background/messages/jup
 import type { writeRequestBody, writeResponseBody } from "~background/messages/jupyterWrite"
 
 
-// Services Imports
-import { getAllCellsData, getAllCells } from "../services/parse-notebook"
-
 export const initMessagesList: MessageModel[] = [
   {
     message: "Hello there! How can I help you?",
