@@ -29,7 +29,6 @@ const handleWriteRequest = (write_instructions) => {
 
     const Jupyter = (window as any).Jupyter;
 
-    console.log("Inside handleWriteRequest", write_instructions)
     // const cells = Jupyter.notebook.get_cells()
     // // Loop through the cells and update the content
     // for (let i = 0; i < cells.length; i++) {
