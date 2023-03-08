@@ -1,61 +1,38 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
+import { getCurrentTabId, executeScriptInMainWorld } from "~background/utils/mainWorld"
  
-export type readRequestBody = {
-  id: number
-}
+export type readRequestBody = {}
  
 export type readResponseBody = {
-  message: object
+  success: boolean
+  notebookJSON: object
 }
 
-
-function getCurrentTabId() {
-  return new Promise<number>((resolve, reject) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-      const tab = tabs[0];
-      if (!tab) {
-        reject(new Error("No active tab found"));
-        return;
-      }
-      const tabId = tab.id;
-      resolve(tabId);
-    });
-  });
-}
 
 const handleReadRequest = (body) => {
 
-  console.log("Inside handleReadRequest", body)
-
+  // Get the Jupyter object 
   const Jupyter = (window as any).Jupyter;
+
+  // Parse the notebook
   const notebookJSON = Jupyter.notebook.toJSON()
 
   return notebookJSON
   
 }
 
- 
-const handler: PlasmoMessaging.MessageHandler<
-  readRequestBody,
-  readResponseBody
-> = async (req, res) => {
-  console.log(req.body.id)
 
+const handler: PlasmoMessaging.MessageHandler<readRequestBody, readResponseBody> = async (req, res) => {
+
+  // Get the current tab id
   const tabId = await getCurrentTabId()
-  const scriptResult = await chrome.scripting.executeScript(
-          {
-              target: {tabId},
-              world: "MAIN", // MAIN in order to access the window object
-              func: handleReadRequest,
-              args : [req.body] // Note that only serializable objects can be passed as arguments
-          })
-  console.log("Script Result", scriptResult)
 
-  console.log("After execute script")
+  // Execute the script in the main world
+  const scriptResult = await executeScriptInMainWorld(tabId, handleReadRequest, [req.body])
+  console.log("scriptResult", scriptResult)
  
-  res.send({
-    message: scriptResult
-  })
+  // Send back to the content script
+  res.send({success: true, notebookJSON: scriptResult})
 }
  
 export default handler

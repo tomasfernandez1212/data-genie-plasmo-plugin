@@ -1,27 +1,29 @@
 
 import type { PlasmoMessaging } from "@plasmohq/messaging"
+import { getCurrentTabId, executeScriptInMainWorld } from "~background/utils/mainWorld"
  
+export type addInstruction = {
+  cell_content: string
+  cell_position: number
+}
+
+export type updateInstruction = {
+  cell_id: string
+  cell_content: string
+}
+
+export type deleteInstruction = {
+  cell_id: string
+}
+
 export type writeRequestBody = {
-  id: number
+  instructions: Array<addInstruction | updateInstruction | deleteInstruction>
 }
  
 export type writeResponseBody = {
-  message: object
+  success: boolean
 }
 
-function getCurrentTabId() {
-    return new Promise<number>((resolve, reject) => {
-      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        const tab = tabs[0];
-        if (!tab) {
-          reject(new Error("No active tab found"));
-          return;
-        }
-        const tabId = tab.id;
-        resolve(tabId);
-      });
-    });
-}
 
 const handleWriteRequest = (write_instructions) => {
 
@@ -40,27 +42,17 @@ const handleWriteRequest = (write_instructions) => {
 }
 
 
-const handler: PlasmoMessaging.MessageHandler<
-    writeRequestBody,
-    writeResponseBody
-> = async (req, res) => {
-  console.log(req.body.id)
+const handler: PlasmoMessaging.MessageHandler<writeRequestBody, writeResponseBody> = async (req, res) => {
 
+  // Get the current tab id
   const tabId = await getCurrentTabId()
-  const scriptResult = await chrome.scripting.executeScript(
-          {
-              target: {tabId},
-              world: "MAIN", // MAIN in order to access the window object
-              func: handleWriteRequest,
-              args : [req.body] // Note that only serializable objects can be passed as arguments
-          })
-  console.log("Script Result", scriptResult)
 
-  console.log("After execute script")
+  // Execute the script in the main world
+  const scriptResult = await executeScriptInMainWorld(tabId, handleWriteRequest, [req.body])
+  console.log("scriptResult", scriptResult)
  
-  res.send({
-    message: scriptResult
-  })
+  // Send back to the content script
+  res.send({success: true})
 }
  
 export default handler

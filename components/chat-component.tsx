@@ -76,7 +76,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
       const writeResults = sendToBackground<writeRequestBody, writeResponseBody>({
         name: "jupyterWrite",
         body: {
-          id: 123
+          instructions: responseJson.instructions
         }
       })
       console.log("writeResults", writeResults)
@@ -103,18 +103,16 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
     setIsTyping(true)
 
     // Get the data from the notebook
-    const parsedNotebook = sendToBackground<readRequestBody, readResponseBody>({
+    const readResponseBody = await sendToBackground<readRequestBody, readResponseBody>({
       name: "jupyterRead",
-      body: {
-        id: 123
-      }
+      body: {}
     })
-    console.log("parsedNotebook", parsedNotebook)
+    console.log("notebookJSON", readResponseBody.notebookJSON)
 
     const body = JSON.stringify({
       pastMessages: messages,
       latestMessage: latestMessage,
-      parsedNotebook: parsedNotebook
+      notebookJSON: readResponseBody.notebookJSON
     })
 
     console.log("body", body)
@@ -129,7 +127,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
 
     const mockResponse = new Response(JSON.stringify({
       "natural_language_response": "I have updated the cells with index 0 and 1.",
-      "write_instructions": []
+      "instructions": []
     }), {
       status: 200,
       headers: { 'Content-type': 'application/json' },
