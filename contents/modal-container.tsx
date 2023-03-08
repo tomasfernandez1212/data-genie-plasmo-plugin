@@ -1,7 +1,6 @@
 // Plasmo Imports
 import type { PlasmoGetStyle } from "plasmo"
 import type { PlasmoCSConfig } from "plasmo"
-import { usePort } from "@plasmohq/messaging/hook"
 
 // React Imports
 import { useEffect, useState} from "react"
@@ -37,8 +36,6 @@ const DataGenieModal = () => {
   const [messages, setMessages] = useState<MessageModel[]>(initMessagesList);
   const [parsedNotebook, setParsedNotebook] = useState<[]>([])
 
-  const mailPort = usePort("jupyter-background")
-  console.log("mailPort is: ", mailPort)
 
   return (
     <>
@@ -49,7 +46,7 @@ const DataGenieModal = () => {
       <Modal show={modalShow} onHide={() => setModalShow(false)}
       aria-labelledby="contained-modal-title-vcenter" animation={false}
       dialogClassName="datagenie-modal">
-        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} mailPort={mailPort}/>
+        <ChatComponent isTyping={isTyping} setIsTyping={setIsTyping} messages={messages} setMessages={setMessages} />
       </Modal>
     </>
 )}

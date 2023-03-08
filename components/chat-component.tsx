@@ -16,6 +16,11 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import dataGenieThumbnail from "url:../assets/datagenie-thumbnail.png"
 
+import { sendToBackground } from "@plasmohq/messaging"
+import type { readRequestBody, readResponseBody } from "~background/messages/jupyterRead"
+import type { writeRequestBody, writeResponseBody } from "~background/messages/jupyterWrite"
+
+
 // Services Imports
 import { getAllCellsData, getAllCells } from "../services/parse-notebook"
 
@@ -44,26 +49,9 @@ type ChatComponentProps = {
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   messages: MessageModel[];
   setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
-  mailPort: any;
 };
 
-export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, mailPort }: ChatComponentProps) => {
-
-  const handleBackendInstructions = (instructions: any) => {
-
-    // If there are no instructions, return
-    if (instructions.length === 0) {
-      return
-    }
-
-    // If there are instructions, send to background
-    instructions.forEach((instruction: any) => {
-      console.log("Sending instruction: ", instruction)
-      mailPort.send(instruction)
-    })
-
-  }
-
+export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: ChatComponentProps) => {
 
   const handleBackendResponse = (response: any) => {
     
@@ -84,13 +72,20 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, ma
       // Set the typing indicator to false
       setIsTyping(false)
 
-      handleBackendInstructions(responseJson.instructions)
+      // Send to background to update the notebook
+      const writeResults = sendToBackground<writeRequestBody, writeResponseBody>({
+        name: "jupyterWrite",
+        body: {
+          id: 123
+        }
+      })
+      console.log("writeResults", writeResults)
 
     })
 
   }
   
-  const handleUserMessageSend = (message: string) => {
+  const handleUserMessageSend = async (message: string) => {
 
     const cleanMessage = cleanUserInput(message)
 
@@ -108,13 +103,21 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, ma
     setIsTyping(true)
 
     // Get the data from the notebook
-    const parsedNotebook = getAllCellsData()
+    const parsedNotebook = sendToBackground<readRequestBody, readResponseBody>({
+      name: "jupyterRead",
+      body: {
+        id: 123
+      }
+    })
+    console.log("parsedNotebook", parsedNotebook)
 
     const body = JSON.stringify({
       pastMessages: messages,
       latestMessage: latestMessage,
       parsedNotebook: parsedNotebook
     })
+
+    console.log("body", body)
 
     // Request the data genie backend to respond
     // fetch("http://localhost:8050/", {
@@ -126,20 +129,7 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages, ma
 
     const mockResponse = new Response(JSON.stringify({
       "natural_language_response": "I have updated the cells with index 0 and 1.",
-      "instructions": [
-        {
-          "action": "update",
-          "cell_index": 0,
-          "cell_type": "text_cell",
-          "updated_cell": "# After the assistant modifies the notebook:"
-        },
-        {
-          "action": "update",
-          "cell_index": 1,
-          "cell_type": "code_cell",
-          "updated_cell": "print(\"Hello World\")"
-        }
-      ]
+      "write_instructions": []
     }), {
       status: 200,
       headers: { 'Content-type': 'application/json' },
