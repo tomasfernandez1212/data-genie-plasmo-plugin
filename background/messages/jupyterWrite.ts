@@ -25,9 +25,12 @@ export type writeResponseBody = {
 }
 
 
-const handleWriteRequest = (write_instructions) => {
+const handleWriteRequest = (body) => {
 
     const Jupyter = (window as any).Jupyter;
+
+    const instructions = body.instructions
+    console.log("instructions", instructions)
 
     // const cells = Jupyter.notebook.get_cells()
     // // Loop through the cells and update the content

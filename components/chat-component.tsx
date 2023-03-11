@@ -115,23 +115,12 @@ export const ChatComponent = ({ isTyping, setIsTyping, messages, setMessages }: 
     console.log("body", body)
 
     // Request the data genie backend to respond
-    // fetch("http://localhost:8050/", {
-    //   method: "POST",
-    //   headers: {"Content-Type": "application/json"},
-    //   body: body
-    // })
-    //   .then(response => handleBackendResponse(response))
-
-    const mockResponse = new Response(JSON.stringify({
-      "natural_language_response": "I have updated the cells with index 0 and 1.",
-      "instructions": []
-    }), {
-      status: 200,
-      headers: { 'Content-type': 'application/json' },
-    });
-
-    handleBackendResponse(mockResponse)
-
+    fetch("http://localhost:8050/", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: body
+    })
+      .then(response => handleBackendResponse(response))
   }
 
   return (
